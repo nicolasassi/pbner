@@ -33,6 +33,10 @@ func isAlnum(s string) bool {
 	return digit.MatchString(s) || isLetter(s)
 }
 
+func isNum(s string) bool {
+	return digit.MatchString(s)
+}
+
 func isUpper(s string) bool {
 	return upper.MatchString(s)
 }
@@ -44,6 +48,13 @@ func beforeIsUpper(tokens []string, index int) bool {
 	return isUpper(tokens[index-1][len(tokens[index-1])-1:])
 }
 
+func beforeIsNum(tokens []string, index int) bool {
+	if index == 0 {
+		return false
+	}
+	return isNum(tokens[index-1][len(tokens[index-1])-1:])
+}
+
 func afterIsUpper(tokens []string, index int) bool {
 	fmt.Println(index, len(tokens))
 	if index == len(tokens)-1 {
@@ -51,4 +62,13 @@ func afterIsUpper(tokens []string, index int) bool {
 	}
 	fmt.Println(tokens[index+1])
 	return isUpper(string(tokens[index+1]))
+}
+
+func afterIsNum(tokens []string, index int) bool {
+	fmt.Println(index, len(tokens))
+	if index == len(tokens)-1 {
+		return false
+	}
+	fmt.Println(tokens[index+1])
+	return isNum(string(tokens[index+1]))
 }

@@ -12,6 +12,8 @@ type Punct struct {
 	NWordsAfter   int
 	BeforeIsUpper bool
 	AfterIsUpper  bool
+	AfterIsNum    bool
+	BeforeIsNum   bool
 }
 
 func NewDocument(text string) *Document {
@@ -30,6 +32,8 @@ func NewDocument(text string) *Document {
 			NWordsAfter:   len(tokenized) - i,
 			BeforeIsUpper: beforeIsUpper(tokenized, i),
 			AfterIsUpper:  afterIsUpper(tokenized, i),
+			AfterIsNum:    afterIsNum(tokenized, i),
+			BeforeIsNum:   beforeIsNum(tokenized, i),
 		})
 	}
 	return doc

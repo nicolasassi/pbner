@@ -5,24 +5,13 @@ import (
 )
 
 func PunckTokenize(text string) []string {
-	var puctSensitive string
+	var tokenized []string
 	chars := strings.Split(text, "")
-	for i, s := range chars {
-		if isPunct(s) {
-			if i != 0 {
-				if !isSpace(chars[i-1]) {
-					puctSensitive += ` `
-				}
-			}
-			puctSensitive += s
-			if i+1 != len(chars) {
-				if !isSpace(chars[i+1]) {
-					puctSensitive += ` `
-				}
-			}
+	for _, char := range chars {
+		if isSpace(char) {
 			continue
 		}
-		puctSensitive += s
+		tokenized = append(tokenized, char)
 	}
-	return whiteSpace.Split(puctSensitive, -1)
+	return tokenized
 }
