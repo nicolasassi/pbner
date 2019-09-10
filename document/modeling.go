@@ -6,8 +6,6 @@ import (
 	"io"
 	"math/rand"
 	"time"
-
-	"gopkg.in/jdkato/prose.v2"
 )
 
 // DataModel represents a single entry of Prodigy's JSON Lines output.
@@ -15,8 +13,14 @@ import (
 // entities are within the given `Text`.
 type DataModel struct {
 	Text   string
-	Spans  []prose.LabeledEntity
+	Spans  []LabeledEntity
 	Answer string
+}
+
+type LabeledEntity struct {
+	Start int
+	End   int
+	Label string
 }
 
 type RawDataModel struct {
@@ -54,7 +58,7 @@ func (raw RawDataModel) modelData() DataModel {
 	ent.Answer = "accept"
 	for _, span := range raw.Entities {
 		ent.Spans = append(ent.Spans,
-			prose.LabeledEntity{
+			LabeledEntity{
 				Start: getInt(span[0]),
 				End:   getInt(span[1]),
 				Label: span[2].(string),
@@ -79,16 +83,14 @@ func getInt(n interface{}) int {
 // our model and one for testing it.
 // We're using an 80-20 split here, although you may want to use a different
 // split.
-func Split(data []DataModel) ([]prose.EntityContext, []DataModel) {
+func Split(data []DataModel) ([]DataModel, []DataModel) {
 	cutoff := int(float64(len(data)) * 0.8)
 
-	train, test := []prose.EntityContext{}, []DataModel{}
+	var train, test []DataModel
+
 	for i, entry := range data {
 		if i < cutoff {
-			train = append(train, prose.EntityContext{
-				Text:   entry.Text,
-				Spans:  entry.Spans,
-				Accept: entry.Answer == "accept"})
+			train = append(train, entry)
 		} else {
 			test = append(test, entry)
 		}
