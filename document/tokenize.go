@@ -5,13 +5,31 @@ import (
 )
 
 func PunckTokenize(text string) []string {
-	var tokenized []string
-	chars := strings.Split(text, "")
-	for _, char := range chars {
-		if isSpace(char) {
+	allChars := strings.Split(text, "")
+	var allCharPlusSpace []string
+	for i, char := range allChars {
+		if i == 0 {
 			continue
 		}
-		tokenized = append(tokenized, char)
+		if i == len(allChars)-1 {
+			if isPunct(char) {
+				allCharPlusSpace = append(allCharPlusSpace, " ", char)
+				continue
+			}
+		}
+		if isPunct(char) {
+			if !isSpace(allChars[i-1]) {
+				allCharPlusSpace = append(allCharPlusSpace, " ")
+			}
+			allCharPlusSpace = append(allCharPlusSpace, char)
+			if !isSpace(allChars[i+1]) {
+				allCharPlusSpace = append(allCharPlusSpace, " ")
+			}
+			continue
+		}
+		allCharPlusSpace = append(allCharPlusSpace, char)
 	}
-	return tokenized
+	text = strings.Join(allCharPlusSpace, "")
+	text = cleanDoubleSpaces(text)
+	return whiteSpace.Split(strings.TrimSpace(text), -1)
 }

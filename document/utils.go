@@ -1,16 +1,16 @@
 package document
 
 import (
-	"fmt"
 	"regexp"
 )
 
 var (
-	upper      = regexp.MustCompile(`[\p{Lu}]+`)
-	letter     = regexp.MustCompile(`[\p{L}]+`)
-	digit      = regexp.MustCompile(`\d`)
-	whiteSpace = regexp.MustCompile(`[\s\t\n\r\f\v]`)
-	punct      = regexp.MustCompile(`[!\\"#$%&'()*+,\-./:;<=>?@\[\]¨\^\_\x60\{\|\}\~]`)
+	upper           = regexp.MustCompile(`[\p{Lu}]+`)
+	letter          = regexp.MustCompile(`[\p{L}]+`)
+	digit           = regexp.MustCompile(`\d`)
+	whiteSpace      = regexp.MustCompile(`[\s\t\n\r\f\v]`)
+	multiWhiteSpace = regexp.MustCompile(`[\s\t\n\r\f\v]+`)
+	punct           = regexp.MustCompile(`[!\\"#$%&'()*+,\-./:;<=>?@\[\]¨\^\_\x60\{\|\}\~]`)
 )
 
 // IsPunct determines if a character is a punctuation symbol.
@@ -56,19 +56,33 @@ func beforeIsNum(tokens []string, index int) bool {
 }
 
 func afterIsUpper(tokens []string, index int) bool {
-	fmt.Println(index, len(tokens))
 	if index == len(tokens)-1 {
 		return false
 	}
-	fmt.Println(tokens[index+1])
 	return isUpper(string(tokens[index+1]))
 }
 
-func afterIsNum(tokens []string, index int) bool {
-	fmt.Println(index, len(tokens))
+func beforeIsPunkt(tokens []string, index int) bool {
+	if index == 0 {
+		return false
+	}
+	return isPunct(tokens[index-1][len(tokens[index-1])-1:])
+}
+
+func afterIsPunkt(tokens []string, index int) bool {
 	if index == len(tokens)-1 {
 		return false
 	}
-	fmt.Println(tokens[index+1])
+	return isPunct(string(tokens[index+1]))
+}
+
+func afterIsNum(tokens []string, index int) bool {
+	if index == len(tokens)-1 {
+		return false
+	}
 	return isNum(string(tokens[index+1]))
+}
+
+func cleanDoubleSpaces(text string) string {
+	return multiWhiteSpace.ReplaceAllString(text, " ")
 }

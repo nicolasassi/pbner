@@ -11,30 +11,29 @@ import (
 // DataModel represents a single entry of Prodigy's JSON Lines output.
 // LabeledEntity` is a structure defined by prose that specifies where the
 // entities are within the given `Text`.
-type DataModel struct {
-	Text   string
-	Spans  []LabeledEntity
-	Answer string
+type Annotations struct {
+	Text  string          `json:"-"`
+	Spans []LabeledEntity `json:"spans"`
 }
 
 type LabeledEntity struct {
-	Start int
-	End   int
-	Label string
+	Start int    `json:"start"`
+	End   int    `json:"end"`
+	Label string `json:"label"`
 }
 
-type RawDataModel struct {
+type RawAnnotations struct {
 	Entities [][]interface{} `json:"entities"`
 	Text     string          `json:"text"`
 }
 
 // ReadData reads our JSON Lines file line-by-line, populating a
 // slice of `DataModel` structures.
-func ReadData(jsonLines []byte, limit int) []DataModel {
+func ReadData(jsonLines []byte, args ...interface{}) []Annotations {
 	dec := json.NewDecoder(bytes.NewReader(jsonLines))
-	entries := []DataModel{}
+	entries := []Annotations{}
 	for {
-		raw := RawDataModel{}
+		raw := RawAnnotations{}
 		err := dec.Decode(&raw)
 		if err != nil {
 			if err == io.EOF {
@@ -45,18 +44,18 @@ func ReadData(jsonLines []byte, limit int) []DataModel {
 		ent := raw.modelData()
 		entries = append(entries, ent)
 	}
-	Shuffle(entries)
-	if limit == -1 {
-		return entries
+	if args != nil {
+		if args[0].(int) != -1 && args[0].(int) != 0 {
+			return entries[:args[0].(int)]
+		}
 	}
-	return entries[:limit]
+	return entries
 }
 
-func (raw RawDataModel) modelData() DataModel {
-	ent := DataModel{}
-	ent.Text = raw.Text
-	ent.Answer = "accept"
+func (raw RawAnnotations) modelData() Annotations {
+	ent := Annotations{}
 	for _, span := range raw.Entities {
+		ent.Text = raw.Text
 		ent.Spans = append(ent.Spans,
 			LabeledEntity{
 				Start: getInt(span[0]),
@@ -67,7 +66,7 @@ func (raw RawDataModel) modelData() DataModel {
 	return ent
 }
 
-func Shuffle(dm []DataModel) {
+func Shuffle(dm []Annotations) {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	for n := len(dm); n > 0; n-- {
 		randIndex := r.Intn(n)
@@ -83,10 +82,10 @@ func getInt(n interface{}) int {
 // our model and one for testing it.
 // We're using an 80-20 split here, although you may want to use a different
 // split.
-func Split(data []DataModel) ([]DataModel, []DataModel) {
+func Split(data []Annotations) ([]Annotations, []Annotations) {
 	cutoff := int(float64(len(data)) * 0.8)
 
-	var train, test []DataModel
+	var train, test []Annotations
 
 	for i, entry := range data {
 		if i < cutoff {

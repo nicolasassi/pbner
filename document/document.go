@@ -1,9 +1,14 @@
 package document
 
 type Document struct {
-	RawText       string
-	PunkTokenized []string
-	Puncts        []*Punct
+	RawText       string   `json:"text"`
+	PunkTokenized []string `json:"punkt_tokenized"`
+	Puncts        []*Punct `json:"punctuation"`
+}
+
+type AnnotatedDocument struct {
+	Document    Document
+	Annotations Annotations
 }
 
 type Punct struct {
@@ -14,6 +19,8 @@ type Punct struct {
 	AfterIsUpper  bool
 	AfterIsNum    bool
 	BeforeIsNum   bool
+	BeforeIsPunkt bool
+	AfterIsPunkt  bool
 }
 
 func NewDocument(text string) *Document {
@@ -34,6 +41,8 @@ func NewDocument(text string) *Document {
 			AfterIsUpper:  afterIsUpper(tokenized, i),
 			AfterIsNum:    afterIsNum(tokenized, i),
 			BeforeIsNum:   beforeIsNum(tokenized, i),
+			BeforeIsPunkt: beforeIsPunkt(tokenized, i),
+			AfterIsPunkt:  afterIsPunkt(tokenized, i),
 		})
 	}
 	return doc
