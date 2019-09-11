@@ -14,7 +14,7 @@ var docs []document.AnnotatedDocument
 
 func main() {
 	t1()
-	buildDS()
+	// buildDS()
 	buildDSSmall()
 }
 

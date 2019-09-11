@@ -12,15 +12,17 @@ type AnnotatedDocument struct {
 }
 
 type Punct struct {
-	Index         int
-	Type          string
-	NWordsAfter   int
-	BeforeIsUpper bool
-	AfterIsUpper  bool
-	AfterIsNum    bool
-	BeforeIsNum   bool
-	BeforeIsPunkt bool
-	AfterIsPunkt  bool
+	Index               int
+	Type                string
+	NWordsAfter         int
+	BeforeIsUpper       bool
+	AfterIsUpper        bool
+	AfterIsNum          bool
+	BeforeIsNum         bool
+	BeforeIsPunkt       bool
+	AfterIsPunkt        bool
+	NToNextSimilarPunkt int
+	NToNextDotPunkt     int
 }
 
 func NewDocument(text string) *Document {
@@ -34,15 +36,17 @@ func NewDocument(text string) *Document {
 			continue
 		}
 		doc.Puncts = append(doc.Puncts, &Punct{
-			Index:         i,
-			Type:          tok,
-			NWordsAfter:   len(tokenized) - i,
-			BeforeIsUpper: beforeIsUpper(tokenized, i),
-			AfterIsUpper:  afterIsUpper(tokenized, i),
-			AfterIsNum:    afterIsNum(tokenized, i),
-			BeforeIsNum:   beforeIsNum(tokenized, i),
-			BeforeIsPunkt: beforeIsPunkt(tokenized, i),
-			AfterIsPunkt:  afterIsPunkt(tokenized, i),
+			Index:               i,
+			Type:                tok,
+			NWordsAfter:         len(tokenized) - i,
+			BeforeIsUpper:       beforeIsUpper(tokenized, i),
+			AfterIsUpper:        afterIsUpper(tokenized, i),
+			AfterIsNum:          afterIsNum(tokenized, i),
+			BeforeIsNum:         beforeIsNum(tokenized, i),
+			BeforeIsPunkt:       beforeIsPunkt(tokenized, i),
+			AfterIsPunkt:        afterIsPunkt(tokenized, i),
+			NToNextSimilarPunkt: 0,
+			NToNextDotPunkt:     0,
 		})
 	}
 	return doc
