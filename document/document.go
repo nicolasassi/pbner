@@ -45,8 +45,8 @@ func NewDocument(text string) *Document {
 			BeforeIsNum:         beforeIsNum(tokenized, i),
 			BeforeIsPunkt:       beforeIsPunkt(tokenized, i),
 			AfterIsPunkt:        afterIsPunkt(tokenized, i),
-			NToNextSimilarPunkt: 0,
-			NToNextDotPunkt:     0,
+			NToNextSimilarPunkt: nextSimilar(tokenized, i),
+			NToNextDotPunkt:     nextPunkt(tokenized, i),
 		})
 	}
 	return doc

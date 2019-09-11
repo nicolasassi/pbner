@@ -86,3 +86,27 @@ func afterIsNum(tokens []string, index int) bool {
 func cleanDoubleSpaces(text string) string {
 	return multiWhiteSpace.ReplaceAllString(text, " ")
 }
+
+func nextSimilar(tokens []string, index int) int {
+	for i, token := range tokens {
+		if i <= index {
+			continue
+		}
+		if token == tokens[index] {
+			return i
+		}
+	}
+	return -1
+}
+
+func nextPunkt(tokens []string, index int) int {
+	for i, token := range tokens {
+		if i <= index {
+			continue
+		}
+		if isPunct(token) {
+			return i
+		}
+	}
+	return -1
+}
