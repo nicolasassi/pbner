@@ -104,7 +104,7 @@ func nextDotPunkt(tokens []string, index int) int {
 		if i <= index {
 			continue
 		}
-		if isPunkt(token) {
+		if isPunct(token) {
 			return i
 		}
 	}
