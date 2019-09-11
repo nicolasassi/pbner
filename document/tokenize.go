@@ -9,7 +9,10 @@ func PunckTokenize(text string) []string {
 	var allCharPlusSpace []string
 	for i, char := range allChars {
 		if i == 0 {
-			continue
+			if isPunct(char) {
+				allCharPlusSpace = append(allCharPlusSpace, char, " ")
+				continue
+			}
 		}
 		if i == len(allChars)-1 {
 			if isPunct(char) {
