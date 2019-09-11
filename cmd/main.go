@@ -13,7 +13,7 @@ import (
 var docs []document.AnnotatedDocument
 
 func main() {
-	t1()
+	// t1()
 	// buildDS()
 	buildDSSmall()
 }

@@ -99,12 +99,12 @@ func nextSimilar(tokens []string, index int) int {
 	return -1
 }
 
-func nextPunkt(tokens []string, index int) int {
+func nextDotPunkt(tokens []string, index int) int {
 	for i, token := range tokens {
 		if i <= index {
 			continue
 		}
-		if isPunct(token) {
+		if isPunkt(token) {
 			return i
 		}
 	}
