@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func PunckTokenize(text string) []string {
+func punctTokenize(text string) []string {
 	allChars := strings.Split(text, "")
 	var allCharPlusSpace []string
 	for i, char := range allChars {

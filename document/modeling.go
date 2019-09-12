@@ -8,9 +8,6 @@ import (
 	"time"
 )
 
-// DataModel represents a single entry of Prodigy's JSON Lines output.
-// LabeledEntity` is a structure defined by prose that specifies where the
-// entities are within the given `Text`.
 type Annotations struct {
 	Text  string          `json:"-"`
 	Spans []LabeledEntity `json:"spans"`

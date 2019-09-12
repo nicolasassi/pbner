@@ -2,7 +2,7 @@ package document
 
 type Document struct {
 	RawText       string   `json:"text"`
-	PunkTokenized []string `json:"punkt_tokenized"`
+	PuncTokenized []string `json:"punct_tokenized"`
 	Puncts        []*Punct `json:"punctuation"`
 }
 
@@ -12,24 +12,24 @@ type AnnotatedDocument struct {
 }
 
 type Punct struct {
-	Index               int
-	Type                string
-	NWordsAfter         int
-	BeforeIsUpper       bool
-	AfterIsUpper        bool
-	AfterIsNum          bool
-	BeforeIsNum         bool
-	BeforeIsPunkt       bool
-	AfterIsPunkt        bool
-	NToNextSimilarPunkt int
-	NToNextDotPunkt     int
+	Index               int    `json:"index"`
+	Type                string `json:"type"`
+	NTokensAfter        int    `json:"n_tokens_after"`
+	BeforeIsUpper       bool   `json:"before_is_upper"`
+	AfterIsUpper        bool   `json:"after_is_upper"`
+	AfterIsNum          bool   `json:"after_is_n"`
+	BeforeIsNum         bool   `json:"before_is_n"`
+	BeforeIsPunct       bool   `json:"before_is_punct"`
+	AfterIsPunct        bool   `json:"after_is_punct"`
+	NToNextSimilarPunct int    `json:"n_to_next_similar_punct"`
+	NToNextDotPunct     int    `json:"n_to_next_dot"`
 }
 
 func NewDocument(text string) *Document {
-	tokenized := PunckTokenize(text)
+	tokenized := punctTokenize(text)
 	doc := &Document{
 		RawText:       text,
-		PunkTokenized: tokenized,
+		PuncTokenized: tokenized,
 	}
 	for i, tok := range tokenized {
 		if !isPunct(tok) {
@@ -38,15 +38,15 @@ func NewDocument(text string) *Document {
 		doc.Puncts = append(doc.Puncts, &Punct{
 			Index:               i,
 			Type:                tok,
-			NWordsAfter:         len(tokenized) - i,
+			NTokensAfter:        len(tokenized) - i,
 			BeforeIsUpper:       beforeIsUpper(tokenized, i),
 			AfterIsUpper:        afterIsUpper(tokenized, i),
 			AfterIsNum:          afterIsNum(tokenized, i),
 			BeforeIsNum:         beforeIsNum(tokenized, i),
-			BeforeIsPunkt:       beforeIsPunkt(tokenized, i),
-			AfterIsPunkt:        afterIsPunkt(tokenized, i),
-			NToNextSimilarPunkt: nextSimilar(tokenized, i),
-			NToNextDotPunkt:     nextDotPunkt(tokenized, i),
+			BeforeIsPunct:       beforeIsPunct(tokenized, i),
+			AfterIsPunct:        afterIsPunct(tokenized, i),
+			NToNextSimilarPunct: nextSimilar(tokenized, i),
+			NToNextDotPunct:     nextDotPunct(tokenized, i),
 		})
 	}
 	return doc

@@ -62,14 +62,14 @@ func afterIsUpper(tokens []string, index int) bool {
 	return isUpper(string(tokens[index+1]))
 }
 
-func beforeIsPunkt(tokens []string, index int) bool {
+func beforeIsPunct(tokens []string, index int) bool {
 	if index == 0 {
 		return false
 	}
 	return isPunct(tokens[index-1][len(tokens[index-1])-1:])
 }
 
-func afterIsPunkt(tokens []string, index int) bool {
+func afterIsPunct(tokens []string, index int) bool {
 	if index == len(tokens)-1 {
 		return false
 	}
@@ -99,7 +99,7 @@ func nextSimilar(tokens []string, index int) int {
 	return -1
 }
 
-func nextDotPunkt(tokens []string, index int) int {
+func nextDotPunct(tokens []string, index int) int {
 	for i, token := range tokens {
 		if i <= index {
 			continue
