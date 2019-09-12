@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -40,7 +41,7 @@ func buildDS() {
 			Annotations: a,
 		})
 	}
-	f, err := os.OpenFile("train-data/new_noice.jsonl", os.O_CREATE|os.O_RDWR, 0666)
+	f, err := os.OpenFile("train-data/all.jsonl", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,10 +73,11 @@ func buildDSSmall() {
 			Annotations: a,
 		})
 	}
-	f, err := os.OpenFile("train-data/new_noice_small.jsonl", os.O_CREATE|os.O_RDWR, 0666)
+	f, err := os.OpenFile("train-data/small.jsonl", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
+	w := bufio.NewWriter(f)
 	for index, d := range docs {
 		if index == 2000 {
 			break
@@ -84,11 +86,9 @@ func buildDSSmall() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if _, err := f.Write(b); err != nil {
-			log.Fatal(err)
-		}
-		if _, err := f.WriteString("\n"); err != nil {
+		if _, err := w.WriteString(string(b) + "\n"); err != nil {
 			log.Fatal(err)
 		}
 	}
+	w.Flush()
 }
