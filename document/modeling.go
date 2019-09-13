@@ -60,7 +60,7 @@ func (raw RawAnnotations) modelData() Annotations {
 				Label: span[2].(string),
 			})
 	}
-	ent = fix(ent)
+	fix(&ent)
 	return ent
 }
 

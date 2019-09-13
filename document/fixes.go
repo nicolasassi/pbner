@@ -1,6 +1,6 @@
 package document
 
-func fix(an Annotations) Annotations {
+func fix(an *Annotations) {
 	for _, v := range an.Spans {
 		if isPunct(string(an.Text[v.Start])) {
 			v.Start++
@@ -13,5 +13,4 @@ func fix(an Annotations) Annotations {
 			}
 		}
 	}
-	return an
 }
