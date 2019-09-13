@@ -41,7 +41,7 @@ type Punct struct {
 	AfterIsPunct        bool   `json:"after_is_punct"`
 	NToNextSimilarPunct int    `json:"n_to_next_similar_punct"`
 	NToNextDotPunct     int    `json:"n_to_next_dot"`
-	IsClassDelimiter    bool   `json:"is_class_delimiter,omitempty"`
+	IsClassDelimiter    bool   `json:"is_class_delimiter"`
 }
 
 type indexCounter struct {
