@@ -65,7 +65,7 @@ func NewDocument(text string) *Document {
 		}
 		index := 0
 		for textIndex, punct := range indexCounter.splitedText {
-			if textIndex <= indexCounter.lastIndex {
+			if textIndex <= indexCounter.lastIndex && textIndex != 0 {
 				continue
 			}
 			if punct == tok {
