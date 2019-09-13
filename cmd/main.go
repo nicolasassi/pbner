@@ -11,7 +11,7 @@ import (
 	"github.com/nicolasassi/pbner/document"
 )
 
-var docs []document.AnnotatedDocument
+var docs []*document.AnnotatedDocument
 
 func main() {
 	// t1()
@@ -36,10 +36,7 @@ func buildDS() {
 	document.Shuffle(annotations)
 	for _, a := range annotations {
 		doc := document.NewDocument(a.Text)
-		docs = append(docs, document.AnnotatedDocument{
-			Document:    *doc,
-			Annotations: a,
-		})
+		docs = append(docs, document.NewAnnotatedDocument(doc, a))
 	}
 	f, err := os.OpenFile("train-data/all.jsonl", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
@@ -68,10 +65,7 @@ func buildDSSmall() {
 	document.Shuffle(annotations)
 	for _, a := range annotations {
 		doc := document.NewDocument(a.Text)
-		docs = append(docs, document.AnnotatedDocument{
-			Document:    *doc,
-			Annotations: a,
-		})
+		docs = append(docs, document.NewAnnotatedDocument(doc, a))
 	}
 	f, err := os.OpenFile("train-data/small.jsonl", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
