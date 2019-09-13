@@ -13,4 +13,5 @@ func fix(an Annotations) Annotations {
 			}
 		}
 	}
+	return an
 }
