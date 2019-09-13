@@ -17,7 +17,7 @@ func NewAnnotatedDocument(doc *Document, annot Annotations) *AnnotatedDocument {
 	annotDoc := new(AnnotatedDocument)
 	for _, punctObj := range doc.Puncts {
 		for _, annotObj := range annot.Spans {
-			if punctObj.IndexText == annotObj.Start || punctObj.IndexText == annotObj.End {
+			if punctObj.IndexText == annotObj.Start-1 || punctObj.IndexText == annotObj.End+1 {
 				punctObj.IsClassDelimiter = true
 			}
 		}
