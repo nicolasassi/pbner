@@ -73,7 +73,7 @@ func buildDSSmall() {
 	}
 	w := bufio.NewWriter(f)
 	for index, d := range docs {
-		if index == 2000 {
+		if index == 20000 {
 			break
 		}
 		b, err := json.Marshal(d)
