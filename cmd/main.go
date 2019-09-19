@@ -67,7 +67,7 @@ func buildDSSmall() {
 		doc := document.NewDocument(a.Text)
 		docs = append(docs, document.NewAnnotatedDocument(doc, a))
 	}
-	f, err := os.OpenFile("train-data/small.jsonl", os.O_CREATE|os.O_RDWR, 0666)
+	f, err := os.OpenFile("train-data/smallt.jsonl", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
