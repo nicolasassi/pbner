@@ -15,8 +15,8 @@ var docs []*document.AnnotatedDocument
 
 func main() {
 	// t1()
-	// buildDS()
-	buildDSSmall()
+	buildDS()
+	// buildDSSmall()
 }
 
 func t1() {
@@ -28,7 +28,7 @@ func t1() {
 }
 
 func buildDS() {
-	data, err := ioutil.ReadFile("train-data/super_noice.jsonl")
+	data, err := ioutil.ReadFile("train-data/noice8.jsonl")
 	if err != nil {
 		panic(err)
 	}
