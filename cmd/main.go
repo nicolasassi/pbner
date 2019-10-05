@@ -28,7 +28,7 @@ func t1() {
 }
 
 func buildDS() {
-	data, err := ioutil.ReadFile("train-data/noice8.jsonl")
+	data, err := ioutil.ReadFile("train-data/noice.jsonl")
 	if err != nil {
 		panic(err)
 	}
@@ -38,22 +38,21 @@ func buildDS() {
 		doc := document.NewDocument(a.Text)
 		docs = append(docs, document.NewAnnotatedDocument(doc, a))
 	}
-	f, err := os.OpenFile("train-data/all.jsonl", os.O_CREATE|os.O_RDWR, 0666)
+	f, err := os.OpenFile("train-data/train.jsonl", os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
+	w := bufio.NewWriter(f)
 	for _, d := range docs {
 		b, err := json.Marshal(d)
 		if err != nil {
 			log.Fatal(err)
 		}
-		if _, err := f.Write(b); err != nil {
-			log.Fatal(err)
-		}
-		if _, err := f.WriteString("\n"); err != nil {
+		if _, err := w.WriteString(string(b) + "\n"); err != nil {
 			log.Fatal(err)
 		}
 	}
+	w.Flush()
 }
 
 func buildDSSmall() {

@@ -31,14 +31,18 @@ func NewAnnotatedDocument(doc *Document, annot Annotations) *AnnotatedDocument {
 type Punct struct {
 	IndexText           int    `json:"index"`
 	Type                string `json:"type"`
-	IndexToken          int    `json:"index_token"`
+	IndexToken          int    `json:"index_token"` // same as what would be NTokensBefore
 	NTokensAfter        int    `json:"n_tokens_after"`
-	BeforeIsUpper       bool   `json:"before_is_upper"`
 	AfterIsUpper        bool   `json:"after_is_upper"`
+	BeforeIsUpper       bool   `json:"before_is_upper"`
 	AfterIsNum          bool   `json:"after_is_n"`
 	BeforeIsNum         bool   `json:"before_is_n"`
-	BeforeIsPunct       bool   `json:"before_is_punct"`
 	AfterIsPunct        bool   `json:"after_is_punct"`
+	BeforeIsPunct       bool   `json:"before_is_punct"`
+	NextPunctType       string `json:"next_punct_type"`
+	NToNextPunct        int    `json:"n_to_next_punct"`
+	LastPunctType       string `json:"last_punct_type"`
+	NToLastPunct        int    `json:"n_to_last_punct"`
 	NToNextSimilarPunct int    `json:"n_to_next_similar_punct"`
 	NToNextDotPunct     int    `json:"n_to_next_dot"`
 	IsClassDelimiter    bool   `json:"is_class_delimiter"`
@@ -80,12 +84,16 @@ func NewDocument(text string) *Document {
 			IndexText:           index,
 			Type:                tok,
 			NTokensAfter:        len(tokenized) - i,
-			BeforeIsUpper:       beforeIsUpper(tokenized, i),
 			AfterIsUpper:        afterIsUpper(tokenized, i),
+			BeforeIsUpper:       beforeIsUpper(tokenized, i),
 			AfterIsNum:          afterIsNum(tokenized, i),
 			BeforeIsNum:         beforeIsNum(tokenized, i),
-			BeforeIsPunct:       beforeIsPunct(tokenized, i),
 			AfterIsPunct:        afterIsPunct(tokenized, i),
+			BeforeIsPunct:       beforeIsPunct(tokenized, i),
+			NextPunctType:       nextPunctType(tokenized, i),
+			NToNextPunct:        nextPunct(tokenized, i),
+			LastPunctType:       lastPunctType(tokenized, i),
+			NToLastPunct:        lastPunct(tokenized, i),
 			NToNextSimilarPunct: nextSimilar(tokenized, i),
 			NToNextDotPunct:     nextDotPunct(tokenized, i),
 		})

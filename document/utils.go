@@ -87,6 +87,62 @@ func cleanDoubleSpaces(text string) string {
 	return multiWhiteSpace.ReplaceAllString(text, " ")
 }
 
+func nextPunctType(tokens []string, index int) string {
+	for i, token := range tokens {
+		if i <= index {
+			continue
+		}
+		if isPunct(token) {
+			return token
+		}
+	}
+	return ""
+}
+
+func nextPunct(tokens []string, index int) int {
+	for i, token := range tokens {
+		if i <= index {
+			continue
+		}
+		if isPunct(token) {
+			return i
+		}
+	}
+	return -1
+}
+
+func lastPunctType(tokens []string, index int) string {
+	for i, j := 0, len(tokens)-1; i < j; i, j = i+1, j-1 {
+		tokens[i], tokens[j] = tokens[j], tokens[i]
+	}
+	index = len(tokens) - index
+	for i, token := range tokens {
+		if i <= index {
+			continue
+		}
+		if isPunct(token) {
+			return token
+		}
+	}
+	return ""
+}
+
+func lastPunct(tokens []string, index int) int {
+	for i, j := 0, len(tokens)-1; i < j; i, j = i+1, j-1 {
+		tokens[i], tokens[j] = tokens[j], tokens[i]
+	}
+	index = len(tokens) - index
+	for i, token := range tokens {
+		if i <= index {
+			continue
+		}
+		if isPunct(token) {
+			return i
+		}
+	}
+	return -1
+}
+
 func nextSimilar(tokens []string, index int) int {
 	for i, token := range tokens {
 		if i <= index {
