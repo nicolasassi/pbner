@@ -137,7 +137,7 @@ func lastPunct(tokens []string, index int) int {
 			continue
 		}
 		if isPunct(token) {
-			return i
+			return len(tokens) - index
 		}
 	}
 	return -1
